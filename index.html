@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>A.P.O.D API | NASA</title>
+        <link rel="stylesheet" href="style.css" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Oswald&family=Roboto:wght@400;500;700&family=Rubik:wght@400;700&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <div class="nasa_logo_and_text-container">
+                    <div class="nasa_logo_container"><img src="Images/NASA_logo.svg.png" alt="nasa_logo" class="nasa_logo" /></div>
+                    <h1 class="header-text">A.P.O.D. (Astronomy Picture of the Day) API</h1>
+                </div>
+
+                <div class="menu-icon" onclick="toggleMenu()">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+
+                <ul class="li">
+                    <a href="https://www.nasa.gov/" target="_blank">Check out NASA</a>
+                </ul>
+                <ul class="li">
+                    <a href="https://api.nasa.gov/" target="_blank">About API</a>
+                </ul>
+                
+                
+            </div>
+        </header>
+
+        <main>
+            <div class="search-container">
+                <div class="search-based-container">
+                    <label for="date">Search:</label>
+                    <div class="dateSearch-container"><input type="text" id="dateSearch" name="date" placeholder="yyyy-mm-dd" oninput="textFormatDate(this)" /></div>
+                </div>
+
+                <div class="date-input-container">
+                    <label for="date">Pick:</label>
+                    <div class="apod-date-input-container"><input type="date" id="apod-date-input" name="date" onchange="formatDate()" /></div>
+                </div>
+
+                <div class="button-container">
+                    <button id="search" onclick="getNASA()">Search</button>
+                </div>
+
+                <div class="slider">
+                    <label for="date">Day Range:</label>
+                    <input type="range" min="1" max="50" value="1" class="slider" id="myRange" />
+                    <p id="sliderValue">Days: 1</p>
+                </div>
+            </div>
+
+            <div class="tile-container">
+                <div class="tiles-title-"><h1 id="tiles-title">Pictures from the last 1 days.</h1></div>
+                <div id="apod-container"></div>
+            </div>
+        </main>
+
+        <script src="index.js"></script>
+    </body>
+</html>
