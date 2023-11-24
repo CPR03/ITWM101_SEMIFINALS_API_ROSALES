@@ -11,7 +11,6 @@ function formatDate() {
 
     const dateObject = new Date(selectedDate);
 
-    // Extract year, month, and day
     const year = dateObject.getFullYear();
     const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are zero-based
     const day = String(dateObject.getDate()).padStart(2, "0");
@@ -19,10 +18,10 @@ function formatDate() {
     // Formatted date in yyyy-mm-dd format
     const formattedDate = `${year}-${month}-${day}`;
 
+    //disable dateSearch text input when date input is used
     const textInput = document.getElementById("dateSearch");
     textInput.disabled = dateInput.value !== "";
 
-    // Return the formatted date
     return formattedDate;
 }
 
@@ -39,6 +38,7 @@ function textFormatDate(input) {
         cleanedInput = cleanedInput.substring(0, 7) + "-" + cleanedInput.substring(7);
     }
 
+    //disable date input when text dateSearch input is used
     const dateInput = document.getElementById("apod-date-input");
     dateInput.disabled = cleanedInput !== "";
 
@@ -46,10 +46,12 @@ function textFormatDate(input) {
     input.value = cleanedInput;
 }
 
+//Function for getting date
 function getDate() {
     let textDate = document.getElementById("dateSearch").value;
     let inputDate = document.getElementById("apod-date-input");
 
+    //tell where the date is inputted (dateSearch or apod-date-input)
     if (textDate !== "") {
         inputDate.value = "";
         return textDate;
@@ -57,9 +59,11 @@ function getDate() {
     return formatDate();
 }
 
-// Return Specific Date
+const apiKey = "sNm6IyDodvc4td89Y8nSy6qn3nmf5MserXhb8bc2";
+
+// Return Only Specific Date
 async function getNASA() {
-    const apiKey = "sNm6IyDodvc4td89Y8nSy6qn3nmf5MserXhb8bc2";
+    
     const container = document.getElementById("apod-container");
     const titleContainer = document.getElementById("tiles-title");
 
@@ -83,9 +87,11 @@ async function getNASA() {
     let request = `https://api.nasa.gov/planetary/apod?date=${selectedDate}&api_key=${apiKey}`;
 
     try {
+
         const response = await fetch(request);
         const myJSON = await response.json();
-
+        
+        //Create elements
         const image = document.createElement("img");
         image.classList.add("apod-img");
         image.src = myJSON.url;
@@ -102,8 +108,8 @@ async function getNASA() {
         description.classList.add("apod-description");
         description.innerHTML = myJSON.explanation;
 
+        //Append elements
         const tile = document.createElement("div");
-
         tile.classList.add("image-tile");
 
         tile.appendChild(image);
@@ -115,29 +121,31 @@ async function getNASA() {
 
         // Update the title
         titleContainer.textContent = `Search Result for ${selectedDate}`;
+
     } catch (error) {
         console.error("Error fetching data from NASA API:", error);
     }
 }
 
-// Return last 8 days of pictures
-async function getNASA8Days() {
-    const apiKey = "myxZdPxSJZEshjLdeSGTnpxFDwtdLJlyPd4hUxDC";
+// Return Range of Days From yesterday's Date
+async function getNASARange() {
+
     const container = document.getElementById("apod-container");
     const slider = document.getElementById("myRange");
     const sliderValueElement = document.getElementById("sliderValue");
     const titleContainer = document.getElementById("tiles-title");
 
     try {
-        const dates = [];
+
+        const dates = []; //range of dates array
         const today = new Date();
         const numberOfImages = slider.value;
 
-        // Update outside of the loop
+        
         sliderValueElement.textContent = `Days: ${numberOfImages}`;
         titleContainer.textContent = `Pictures from the last ${numberOfImages} day/s.`;
 
-        for (let i = 0; i < numberOfImages; i++) {
+        for (let i = 1; i <= numberOfImages; i++) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
             dates.push(date.toISOString().split("T")[0]);
@@ -147,10 +155,12 @@ async function getNASA8Days() {
         container.innerHTML = "";
 
         for (const date of dates) {
+
             const request = `https://api.nasa.gov/planetary/apod?date=${date}&api_key=${apiKey}`;
             const response = await fetch(request);
             const myJSON = await response.json();
-
+            
+            //Create elements
             const image = document.createElement("img");
             image.classList.add("apod-img");
             image.src = myJSON.url;
@@ -166,9 +176,11 @@ async function getNASA8Days() {
             const description = document.createElement("p");
             description.classList.add("apod-description");
             description.innerHTML = myJSON.explanation;
-
+            
+            //Append elements
             const tile = document.createElement("div");
             tile.classList.add("image-tile");
+            
             tile.appendChild(image);
             tile.appendChild(imageTitle);
             tile.appendChild(imageDate);
@@ -181,15 +193,19 @@ async function getNASA8Days() {
     }
 }
 
+//Slider Configuration
 const slider = document.getElementById("myRange");
 const sliderValueElement = document.getElementById("sliderValue");
 
+//Update slider real-time
 slider.oninput = function () {
     sliderValueElement.innerHTML = "Days: " + this.value;
 };
 
-slider.addEventListener("change", getNASA8Days);
+//Listener then call getNASARange
+slider.addEventListener("change", getNASARange);
 
+//Display getNASARange by default
 document.addEventListener("DOMContentLoaded", function () {
-    getNASA8Days();
+    getNASARange();
 });
