@@ -256,8 +256,8 @@ a, a:visited{
         font-size: 25px;
         flex: 0.97;
         margin-bottom: 10px;
+        text-align:center;
     }
-
 
     #apod-container {
         grid-template-columns: 1fr;
@@ -269,7 +269,8 @@ a, a:visited{
 
     .header-container {
         flex-direction: column;
-        align-items: flex-start;
+        align-items:start;
+        
     }
 
     /* Hide other header elements when menu is open */
